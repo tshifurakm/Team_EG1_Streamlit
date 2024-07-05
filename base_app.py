@@ -75,18 +75,22 @@ def main():
         # You can read a markdown file from supporting resources folder
         st.markdown("Some information here")
 
-    # Building out the predication page
+    # Building out the prediction page
     if selection == "Prediction":
         st.info("Prediction with ML Models")
         # Creating a text box for user input
         news_text = st.text_area("Enter Text", "Type Here")
 
+        # Choose a model of your choice
+        model_choice = st.selectbox("Choose a model to evaluate", list(models.keys()))
+
         if st.button("Classify"):
             # Transforming user input with vectorizer
             vect_text = test_cv.transform([news_text]).toarray()
+            predictor_path = models[model_choice]
             # Load your .pkl file with the model of your choice + make predictions
-            # Try loading in multiple models to give the user a choice
-            predictor = joblib.load(open(os.path.join("Models/logreg_model.pkl"), "rb"))
+
+            predictor = joblib.load(open(predictor_path, "rb"))
             prediction = predictor.predict(vect_text)
             category = label_to_category[prediction[0]]
 
