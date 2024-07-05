@@ -39,6 +39,21 @@ test_cv = joblib.load(news_vectorizer)  # loading your vectorizer from the pkl f
 # Load your raw data
 # raw = pd.read_csv("streamlit/train.csv")
 
+# Define constants
+label_to_category = {
+    0: "Business",
+    1: "Education",
+    2: "Entertainment",
+    3: "Technology",
+    4: "Sports",
+}
+
+models = {
+    "Logistic Regression": "Models/logreg_model.pkl",
+    "Random Forest": "Models/forest_model.pkl",
+    "SVC": "Models/svc_model.pkl",
+}
+
 
 # The main function where we will build the actual app
 def main():
@@ -73,9 +88,10 @@ def main():
             # Try loading in multiple models to give the user a choice
             predictor = joblib.load(open(os.path.join("Models/logreg_model.pkl"), "rb"))
             prediction = predictor.predict(vect_text)
+            category = label_to_category[prediction[0]]
 
             # When model has successfully run, will print prediction
-            st.success("Text Categorized as: {}".format(prediction))
+            st.success(f"Text Categorized as: **{category}**")
 
 
 # Required to let Streamlit instantiate our web app.
